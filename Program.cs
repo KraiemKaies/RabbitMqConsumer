@@ -1,8 +1,5 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using RabbitMqConsumer;
+﻿using RabbitMQ.Client;
+using RabbitMQ.Consumer;
 
 namespace RabbitMQ.Producer
 {
@@ -16,7 +13,7 @@ namespace RabbitMQ.Producer
             };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
-            QueueConsumer.Consume(channel);
+            DirectExchangeConsumer.Consume(channel);
         }
     }
 }
