@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMqConsumer;
 
 namespace RabbitMQ.Producer
 {
@@ -11,24 +12,11 @@ namespace RabbitMQ.Producer
         {
             var factory = new ConnectionFactory
             {
-                Uri = new Uri("amqp://kraiem:kraiem@localhost:5672")
+                Uri = new Uri("amqp://kraiem:123456@127.0.0.1:5672")
             };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
-            channel.QueueDeclare("Demo-queue",
-                durable: true,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null);
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (sender, e) =>
-            {
-                var body = e.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(message);
-            };
-            channel.BasicConsume("demo-queue", true, consumer);
-            Console.ReadLine();
+            QueueConsumer.Consume(channel);
         }
     }
 }
